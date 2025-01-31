@@ -1,0 +1,59 @@
+{% extends "index.html" %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='Acompt.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    
+
+    <div class="container">
+        <h1>Créer un compte bancaire</h1>
+        <form id="accountForm" action="#" method="POST">
+            <!-- Champ pour le solde initial -->
+            <div class="form-group">
+                <label for="balance">Solde initial :</label>
+                <input type="number" id="balance" name="balance" step="0.01" required>
+            </div>
+
+            <!-- Champ pour le type de compte -->
+            <div class="form-group">
+                <label for="type_compte">Type de compte :</label>
+                <select id="type_compte" name="type_compte" required>
+                    <option value="cheking">Compte courant</option>
+                    <option value="saving">Compte épargne</option>
+                </select>
+            </div>
+
+            <!-- Champ pour le taux d'intérêt (visible uniquement pour "saving") -->
+            <div class="form-group" id="interestRateGroup" style="display: none;">
+                <label for="interest_rate">Taux d'intérêt (%) :</label>
+                <input type="number" id="interest_rate" name="interest_rate" step="0.01">
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit">Créer le compte</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript pour afficher/masquer le champ "Taux d'intérêt"
+        const typeCompteSelect = document.getElementById('type_compte');
+        const interestRateGroup = document.getElementById('interestRateGroup');
+
+        typeCompteSelect.addEventListener('change', function () {
+            if (typeCompteSelect.value === 'saving') {
+                interestRateGroup.style.display = 'block';
+            } else {
+                interestRateGroup.style.display = 'none';
+            }
+        });
+    </script>
+
+{% endblock %}    
+
+
+
