@@ -32,7 +32,16 @@ def ajouter():
 
 @bankAccount.route('/suprimer', methods=['GET', 'POST'])
 def supprimer():
-    return render_template("connection.html")
+    if session.get("username") == "admin":
+        if request.method == "POST":
+            id = request.form.get("id")
+
+            bank_service.delete(bank_service.get_by_id(id))
+            return render_template('index.html')
+
+        return render_template('Scompt.html')
+    else:
+        abort(404)
 
 
 

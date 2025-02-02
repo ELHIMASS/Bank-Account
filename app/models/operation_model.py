@@ -19,9 +19,7 @@ class Operation(Base):
     receiver_account = relationship('BankAccount', foreign_keys=[receiver_account_id], back_populates='received_operations')
 
     def __repr__(self):
-        return f"<Operation id :{self.id} bank_account_id :{self.bank_account_id} 
-            type_operation :{self.type_operation} amount :{self.amount} sender_account_id :{self.sender_account_id}
-            receiver_account_id :{self.receiver_account_id}>"
+        return f"<Operation id :{self.id} bank_account_id :{self.bank_account_id} type_operation :{self.type_operation} amount :{self.amount} sender_account_id :{self.sender_account_id} receiver_account_id :{self.receiver_account_id}>"
 
     def to_dict(self):
         return {

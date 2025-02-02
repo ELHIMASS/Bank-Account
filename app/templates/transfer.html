@@ -1,0 +1,46 @@
+{% extends "index.html" %}
+
+{% block title %}transferer{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='transfer.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Transfert d'argent</h1>
+        <form id="transferForm" action="/transfer" method="POST">
+            <!-- Compte envoie (mt) -->
+            <div class="form-group">
+                <label for="sender_account">Compte envoie (mt) :</label>
+                <select id="sender_account" name="sender_account" required>
+                    {% for compte in acounts %} 
+                        <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                    {% endfor %}    
+                    
+                </select>
+            </div>
+
+            <!-- Compte reçoit -->
+            <div class="form-group">
+                <label for="receiver_account">Compte reçoit :</label>
+                <select id="receiver_account" name="receiver_account" required>
+                    {% for compte in acounts %} 
+                        <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Montant -->
+            <div class="form-group">
+                <label for="amount">Montant :</label>
+                <input type="number" id="amount" name="amount" min="0" step="50" required>
+            </div>
+
+            <!-- Bouton Envoyer -->
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+
+{% endblock %}    

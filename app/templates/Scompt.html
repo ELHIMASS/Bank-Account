@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+
+{% block title %}Supprimer un compte{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='Acompt.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Supprimer un compte bancaire</h1>
+        <form id="accountForm" action="#" method="POST">
+            <!-- Champ pour le solde initial -->
+            <div class="form-group">
+                <label for="balance">ID du compte</label>
+                <input type="number" id="id" name="id"  required>
+            </div>
+            
+            <!-- Bouton de soumission -->
+            <button type="submit">Suprimmer le compte</button>
+        </form>
+    </div>
+
+{% endblock %}    
+
+
+

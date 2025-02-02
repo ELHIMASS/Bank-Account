@@ -14,8 +14,11 @@ class OperationService:
     def create(self, operation):
         return self.operation_dal.create(operation)
 
+    def create_transfer(self, operation):
+        return self.operation_dal.create_transfer(operation)
+
     def update(self, operation):
         return self.operation_dal.update(operation)
 
     def delete(self, operation):
-        return self.operation_dal.delete(operation)
+        return self.operation_dal.delete(operation)    

@@ -39,12 +39,13 @@ if __name__ == '__main__':
 from flask import Flask,render_template,Blueprint
 from app.controlers.user_controler import user 
 from app.controlers.BankAccount_controller import bankAccount
+from app.controlers.operation_controler import operation
 from app import app
 from app.models.user_model import User
-from app.models.bankAcount_model import BankAccount, Base
+from app.models.operation_model import  Base
 from app.models.dataBase import engine
 import secrets
-
+from app.services.bankAccount_service import BankAccountService
 
 def create_tables():
     try:
@@ -56,8 +57,7 @@ def create_tables():
 
 if __name__ == '__main__':
     create_tables()
-    bankAccount = app.register_blueprint(bankAccount,url_prefix='/compte')
-    user=app.register_blueprint(user,url_prefix='/')
-    app.secret_key = secrets.token_hex(32)
-    app.run(debug=True)
+    b = BankAccountService()
+    print(b.get_cheking())
+    
     
