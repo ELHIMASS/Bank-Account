@@ -1,6 +1,6 @@
 from app.dal.bankAccount_dal import BankAccountDAL
 from typing import Final
-from app.services.operation_service import OperationService
+
 
 class BankAccountService:
     SAVING_AMOUNT: Final[float]     = 100

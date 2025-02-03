@@ -42,22 +42,17 @@ from app.controlers.BankAccount_controller import bankAccount
 from app.controlers.operation_controler import operation
 from app import app
 from app.models.user_model import User
-from app.models.operation_model import  Base
+
 from app.models.dataBase import engine
 import secrets
 from app.services.bankAccount_service import BankAccountService
 
-def create_tables():
-    try:
-        # Crée toutes les tables
-        Base.metadata.create_all(bind=engine)
-        print("Tables créées avec succès !")
-    except Exception as e:
-        print(f"Erreur lors de la création des tables : {e}")
+
 
 if __name__ == '__main__':
-    create_tables()
-    b = BankAccountService()
-    print(b.get_cheking())
-    
+    operation = app.register_blueprint(operation,url_prefix='/operation')
+    bankAccount = app.register_blueprint(bankAccount,url_prefix='/compte')
+    user=app.register_blueprint(user,url_prefix='/')
+    app.secret_key = secrets.token_hex(32)
+    app.run(debug=True)
     
