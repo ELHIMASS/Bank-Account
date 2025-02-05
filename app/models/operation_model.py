@@ -1,7 +1,7 @@
 from sqlalchemy import String, Column, Integer, Float, Enum, ForeignKey
 from app import Base
 from sqlalchemy.orm import relationship
-
+from app.models.bankAcount_model import BankAccount
 
 class Operation(Base):
     __tablename__ = 'operations'

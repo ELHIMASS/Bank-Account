@@ -16,9 +16,10 @@
                 <label for="sender_account">Compte envoie (mt) :</label>
                 <select id="sender_account" name="sender_account" required>
                     {% for compte in acounts %} 
-                        <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                        {% if compte.type_compte == "cheking" %}
+                            <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                        {% endif %}
                     {% endfor %}    
-                    
                 </select>
             </div>
 
@@ -26,8 +27,10 @@
             <div class="form-group">
                 <label for="receiver_account">Compte reçoit :</label>
                 <select id="receiver_account" name="receiver_account" required>
-                    {% for compte in acounts %} 
-                        <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                    {% for compte in acounts %}
+                        {% if compte.type_compte == "cheking" %}
+                            <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
             </div>

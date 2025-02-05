@@ -24,6 +24,11 @@ class BankAccountDAL:
     def update(self, bankAccount):
         self.session.commit()
 
+    def update_amount(self, bankAccount, amount):
+        bankAccount.amount = bankAccount.amount + amount  
+        self.session.commit()  
+
+        
     def delete(self, bankAccount):
         self.session.delete(bankAccount)
         self.session.commit()

@@ -11,9 +11,6 @@ class OperationDAL:
     def get_by_id(self, id):
         return self.session.query(Operation).get(id)
 
-    def create_transfer(self, operation):
-        return None
-
     def create(self, operation):
         self.session.add(operation)
         self.session.commit()

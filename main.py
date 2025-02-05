@@ -41,11 +41,7 @@ from app.controlers.user_controler import user
 from app.controlers.BankAccount_controller import bankAccount
 from app.controlers.operation_controler import operation
 from app import app
-from app.models.user_model import User
-
-from app.models.dataBase import engine
 import secrets
-from app.services.bankAccount_service import BankAccountService
 
 
 

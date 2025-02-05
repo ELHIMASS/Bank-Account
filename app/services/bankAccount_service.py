@@ -2,6 +2,7 @@ from app.dal.bankAccount_dal import BankAccountDAL
 from typing import Final
 
 
+
 class BankAccountService:
     SAVING_AMOUNT: Final[float]     = 100
     FREE_TRANSACTIONS:Final[int]    = 3
@@ -32,8 +33,8 @@ class BankAccountService:
                 return self.bankAccount_dal.create(bankAccount)   
         return self.bankAccount_dal.create(bankAccount)
 
-    def update(self, bankAccount):
-        return self.bankAccount_dal.update(bankAccount)
+    def update_amount(self,bankAccount, amount):
+        return self.bankAccount_dal.update_amount(bankAccount, amount)
 
     def delete(self, bankAccount):
         return self.bankAccount_dal.delete(bankAccount)
