@@ -1,7 +1,7 @@
 from sqlalchemy import String, Column, Integer, Float, Enum, ForeignKey
 from app import Base
 from sqlalchemy.orm import relationship
-from app.models.bankAcount_model import BankAccount
+
 
 class Operation(Base):
     __tablename__ = 'operations'
@@ -14,6 +14,7 @@ class Operation(Base):
     receiver_account_id = Column(Integer, ForeignKey('bank_accounts.id', ondelete='SET NULL'), nullable=True)
 
     # Ajout des relations
+    
     bank_account = relationship('BankAccount', foreign_keys=[bank_account_id], back_populates='operations')
     sender_account = relationship('BankAccount', foreign_keys=[sender_account_id], back_populates='sent_operations')
     receiver_account = relationship('BankAccount', foreign_keys=[receiver_account_id], back_populates='received_operations')
