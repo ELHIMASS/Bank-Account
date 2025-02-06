@@ -24,8 +24,8 @@ class BankAccountDAL:
     def update(self, bankAccount):
         self.session.commit()
 
-    def update_amount(self, bankAccount, amount):
-        bankAccount.amount = bankAccount.amount + amount  
+    def update_amount(self, bankAccount, balance):
+        bankAccount.balance = bankAccount.balance + balance  
         self.session.commit()  
 
         

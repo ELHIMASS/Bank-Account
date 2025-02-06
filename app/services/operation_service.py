@@ -14,8 +14,8 @@ class OperationService:
     def create(self, operation):
         return self.operation_dal.create(operation)
 
-    def create_transfer(self, operation):
-        return self.operation_dal.create_transfer(operation)
+    def create_transfer(self, sender_id, receiver_id, amount):
+        return self.operation_dal.create_transfer(sender_id, receiver_id, amount)
 
     def update(self, operation):
         return self.operation_dal.update(operation)

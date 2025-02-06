@@ -30,8 +30,9 @@ class BankAccountService:
         if bankAccount.type_compte == "saving" and bankAccount.balance < self.SAVING_AMOUNT:
             return "Compte épargne non créé ! Le solde doit être supérieur à 100."
         return self.bankAccount_dal.create(bankAccount)
-    def update_amount(self,bankAccount, amount):
-        return self.bankAccount_dal.update_amount(bankAccount, amount)
+    
+    def update_amount(self,bankAccount, balance):
+        return self.bankAccount_dal.update_amount(bankAccount, balance)
 
     def delete(self, bankAccount):
         return self.bankAccount_dal.delete(bankAccount)
