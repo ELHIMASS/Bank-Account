@@ -26,13 +26,10 @@ class BankAccountService:
         return self.bankAccount_dal.get_by_id(id)
 
     def create(self, bankAccount):
-        if bankAccount.type_compte == "cheking":
-            if bankAccount.balance >= self.SAVING_AMOUNT:
-                return "account not created !!!, Balance should be greater than 100"
-            else:
-                return self.bankAccount_dal.create(bankAccount)   
+        
+        if bankAccount.type_compte == "saving" and bankAccount.balance < self.SAVING_AMOUNT:
+            return "Compte épargne non créé ! Le solde doit être supérieur à 100."
         return self.bankAccount_dal.create(bankAccount)
-
     def update_amount(self,bankAccount, amount):
         return self.bankAccount_dal.update_amount(bankAccount, amount)
 
