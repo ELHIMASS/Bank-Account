@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+
+{% block title %}Rechercher un Compte{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='Acompt.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Recherche de Comptes</h1>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="search_input">Recherche :</label>
+                <input type="text" id="search_input" name="search_input" placeholder="ID, Type (checking/saving) ou Solde">
+            </div>
+
+            <button type="submit">Rechercher</button>
+        </form>
+
+        <hr>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Account ID</th>
+                    <th>Type de Compte</th>
+                    <th>Solde</th>
+                    <th>Historique</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for compte in accounts %}
+                <tr>
+                    <td>{{ compte.id }}</td>
+                    <td>{{ compte.type_compte }}</td>
+                    <td>{{ compte.balance }} MAD</td>
+                    <td><a href="{{ url_for('operation.account_history', account_id=compte.id) }}">Voir historique</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

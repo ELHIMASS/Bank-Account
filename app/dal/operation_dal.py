@@ -53,14 +53,60 @@ class OperationDAL:
         self.session.add(deposit)
         self.session.commit()
 
+    def create_retirer(self, account_id, amount):
+        account = self.session.query(BankAccount).filter(BankAccount.id == account_id).first()
 
+        if not account:
+            raise ValueError("Le compte n'existe pas")
+
+        if account.balance < amount:
+            raise ValueError("Fonds insuffisants")
+
+    # Enregistrer l'opération de retrait
+        retireral = Operation(
+            type_operation="retirer",
+            amount=amount, 
+            bank_account_id=account_id
+    )
+
+        account.balance -= amount  # Débiter le compte
+
+        self.session.add(retireral)
+        self.session.commit()
+        
+    
+    def search(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
+        """
+        Effectue une recherche avancée avec des filtres optionnels
+        """
+        query = self.session.query(BankAccount)
+
+        if account_id:
+            query = query.filter(BankAccount.id == account_id)
+
+        if account_type and account_type != "all":
+            query = query.filter(BankAccount.type_compte == account_type)
+
+        if min_balance:
+            query = query.filter(BankAccount.balance >= float(min_balance))
+
+        if max_balance:
+            query = query.filter(BankAccount.balance <= float(max_balance))
+
+        return query.all()
+    
     def get_operations_by_account(self, account_id):
+        """
+        Récupère toutes les opérations où le compte est impliqué (dépôt, retrait, envoi ou réception de transfert)
+        """
         return self.session.query(Operation).filter(
             (Operation.bank_account_id == account_id) |
             (Operation.sender_account_id == account_id) |
             (Operation.receiver_account_id == account_id)
         ).order_by(Operation.id.desc()).all()
 
+
+   
     def create(self, operation):
         self.session.add(operation)
         self.session.commit()

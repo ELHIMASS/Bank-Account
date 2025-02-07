@@ -7,7 +7,7 @@ class BankAccount(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     balance = Column(Float, nullable=False)
-    type_compte = Column(Enum('cheking', 'saving', name='account_type'), nullable=False)
+    type_compte = Column(Enum('cheking', 'Saving', name='account_type'), nullable=False)
 
     operations = relationship(
         "Operation",

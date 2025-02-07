@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% block title %}Historique du Compte{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Historique du Compte {{ account.id }}</h1>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID Opération</th>
+                    <th>Type</th>
+                    <th>Montant</th>
+                    <th>Expéditeur</th>
+                    <th>Bénéficiaire</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for operation in history %}
+                <tr>
+                    <td>{{ operation.id }}</td>
+                    <td>{{ operation.type_operation }}</td>
+                    <td>{{ operation.amount }} MAD</td>
+                    <td>
+                        {% if operation.sender_account_id %}
+                            {{ operation.sender_account_id }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if operation.receiver_account_id %}
+                            {{ operation.receiver_account_id }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ operation.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('rechercher') }}">Retour à la recherche</a>
+    </div>
+{% endblock %}
