@@ -14,7 +14,7 @@ class BankAccountService:
         self.bankAccount_dal = BankAccountDAL()
 
     def get_all(self):
-        return self.bankAccount_dal.get_saving()
+        return self.bankAccount_dal.get_all()
     
     def get_saving(self):
         return self.bankAccount_dal.get_saving()

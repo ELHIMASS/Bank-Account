@@ -22,16 +22,25 @@ def transfer():
         sender_id = request.form['sender_account']
         receiver_id = request.form['receiver_account']
         amount = float(request.form['amount'])
-        
+        # ajoiute un transfer et modifie le montant des deux compte
         op.create_transfer(sender_id, receiver_id, amount)
-        
-        
-        
+
         return render_template('index.html')
     
     acounts = bankAccount.get_cheking()
     return render_template('transfer.html', acounts=acounts)
 
 
+@operation.route('/deposer', methods=['GET', 'POST'])
+def deposer():
+    if request.method == 'POST':
+        account_id = request.form['id_account']
+        amount = request.form['amount']
+
+        op.create_deposit(account_id, amount)
+        return render_template('index.html')
+    
+    acounts = bankAccount.get_all()
+    return render_template('deposer.html', acounts=acounts)
 
 

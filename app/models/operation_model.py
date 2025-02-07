@@ -4,7 +4,7 @@ from app.models.dataBase import Base
 
 class Operation(Base):
     __tablename__ = 'operations'
-
+    
     id = Column(Integer, primary_key=True, autoincrement=True)
     bank_account_id = Column(Integer, ForeignKey('bank_accounts.id', ondelete='CASCADE'))
     type_operation = Column(Enum('deposit', 'withdraw', 'transfer', name='operation_type'), nullable=False)

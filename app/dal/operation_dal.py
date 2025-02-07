@@ -11,6 +11,7 @@ class OperationDAL:
 
     def get_by_id(self, id):
         return self.session.query(Operation).get(id)
+    
     def create_transfer(self, sender_id, receiver_id, amount):
         sender = self.session.query(BankAccount).filter(BankAccount.id == sender_id).first()
         receiver = self.session.query(BankAccount).filter(BankAccount.id == receiver_id).first()
@@ -34,8 +35,26 @@ class OperationDAL:
         self.session.add(transfer)
         self.session.commit()
 
+    def create_deposit(self, account_id, amount):
+        # Récupérer le compte bancaire
+        account = self.session.query(BankAccount).filter(BankAccount.id == account_id).first()
+
+        # Créer une opération de dépôt
+        deposit = Operation(
+            type_operation="deposit",
+            amount=amount,
+            bank_account_id=account_id
+        )
+
+        # Ajouter le montant au solde du compte
+        account.balance += float(amount)
+
+        # Enregistrer les modifications dans la base de données
+        self.session.add(deposit)
+        self.session.commit()
+
+
     def get_operations_by_account(self, account_id):
-        """Récupère l'historique des opérations pour un compte bancaire donné."""
         return self.session.query(Operation).filter(
             (Operation.bank_account_id == account_id) |
             (Operation.sender_account_id == account_id) |

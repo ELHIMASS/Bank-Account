@@ -9,15 +9,13 @@ class BankAccount(Base):
     balance = Column(Float, nullable=False)
     type_compte = Column(Enum('cheking', 'saving', name='account_type'), nullable=False)
 
-    # Relation avec Operation (One-to-Many)
     operations = relationship(
         "Operation",
         back_populates="bank_account",
-        foreign_keys="[Operation.bank_account_id]",  # ✅ On spécifie la bonne clé étrangère
+        foreign_keys="[Operation.bank_account_id]", 
         cascade="all, delete-orphan"
     )
 
-    # Relations pour les transferts
     sent_operations = relationship(
         "Operation",
         foreign_keys="[Operation.sender_account_id]",

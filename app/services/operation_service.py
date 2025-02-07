@@ -16,7 +16,10 @@ class OperationService:
 
     def create_transfer(self, sender_id, receiver_id, amount):
         return self.operation_dal.create_transfer(sender_id, receiver_id, amount)
-
+    
+    def create_deposit(self, account_id, amount):
+        return self.operation_dal.create_deposit(account_id, amount)
+    
     def update(self, operation):
         return self.operation_dal.update(operation)
 

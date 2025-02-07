@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+{% block title %}Déposer de l'argent{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='Acompt.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>Déposer de l'argent</h1>
+        <form id="accountForm" action="#" method="POST">
+            <div class="form-group">
+                <label for="id_account">Compte (id) :</label>
+                <select id="id_account" name="id_account" required>
+                    {% for compte in acounts %}   
+                            <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                    {% endfor %}    
+                </select>
+            </div>
+
+            <label for="amount">Montant à déposer :</label>
+            <input type="number" id="amount" name="amount" step="50" min="0" required>
+            
+            <button type="submit">Deposer</button>
+        </form>
+    </div>
+
+{% endblock %}    
+
+
+
