@@ -15,10 +15,10 @@ class Operation(Base):
     sender_account_id = Column(Integer, ForeignKey('bank_accounts.id'), nullable=True)
     receiver_account_id = Column(Integer, ForeignKey('bank_accounts.id'), nullable=True)
 
-    # Relations avec les comptes bancaires
+    
     bank_account = relationship(
         "BankAccount",
-        back_populates="operations",  # Référence à 'operations' dans BankAccount
+        back_populates="operations",  
         foreign_keys=[bank_account_id]
     )
 

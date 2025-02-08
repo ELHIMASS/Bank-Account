@@ -37,6 +37,16 @@ if __name__ == '__main__':
     print(user)
         Operation.__table__.drop(engine)
     Base.metadata.create_all(engine)
+
+
+
+
+    ## Pour suprimmer les table
+    Operation.__table__.drop(engine)
+    ## pour cree les table
+    User.__table__.create(engine)
+    BankAccount.__table__.create(engine)
+    Operation.__table__.create(engine)
         
 """
 from flask import Flask,render_template,Blueprint
@@ -45,7 +55,7 @@ from app.controlers.BankAccount_controller import bankAccount
 from app.controlers.operation_controler import operation
 from app.models.operation_model import Operation
 from app.models.bankAcount_model import BankAccount
-from app.models.user_model import User, Base
+from app.models.user_model import User
 from app import app, engine
 import secrets
  

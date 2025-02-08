@@ -75,7 +75,7 @@ class OperationDAL:
 
     # Enregistrer l'opération de retrait
         retireral = Operation(
-            type="retirer",
+            type="withdrawal",
             amount=amount, 
             bank_account_id=account_id
     )

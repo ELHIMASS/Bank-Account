@@ -22,13 +22,14 @@
                     {% for operation in history %}
                     <tr>
                         <td>{{ operation.id }}</td>
-                        <td>{{ operation.type_operation | capitalize }}</td>
+
+                        <td>{{ operation.type | capitalize }}</td>
                         {% if account.id == operation.sender_account_id %}
                             <td class="fw-bold text-danger">-{{ operation.amount }} MAD</td>
                         {% else %}
                             <td class="fw-bold text-success">+{{ operation.amount }} MAD</td>
                         {% endif %}    
-
+                        
                         
                         <td>
                             {% if operation.sender_account_id %}
