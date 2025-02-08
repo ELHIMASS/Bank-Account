@@ -16,9 +16,6 @@ class BankAccountDAL:
 
     def get_by_id(self, id):
         return self.session.query(BankAccount).get(id)
-    
-
-
 
     def create(self, bankAccount:BankAccount):
         self.session.add(bankAccount)
@@ -35,3 +32,21 @@ class BankAccountDAL:
     def delete(self, bankAccount):
         self.session.delete(bankAccount)
         self.session.commit()
+
+    def search_accounts(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
+        query = self.session.query(BankAccount)
+
+        if account_id:
+             return self.get_by_id(account_id)
+        
+        if account_type:
+            query = query.filter(BankAccount.type_compte == account_type)
+        
+        if min_balance is not None:
+            query = query.filter(BankAccount.balance >= min_balance)
+        
+        if max_balance is not None:
+            query = query.filter(BankAccount.balance <= max_balance)
+
+        return query.all()
+    

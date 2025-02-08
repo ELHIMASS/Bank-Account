@@ -61,28 +61,15 @@ def retirer():
 
 @operation.route('/rechercher', methods=['GET', 'POST'])
 def rechercher():
-    accounts = bankAccount.get_all()  # Récupérer tous les comptes par défaut
-
     if request.method == 'POST':
-        search_input = request.form.get('search_input')
-
-        # Vérifier si l'entrée est un ID (numérique)
-        if search_input.isdigit():
-            accounts = bankAccount.search_accounts(account_id=int(search_input))
-
-        # Vérifier si c'est un type de compte
-        elif search_input.lower() in ["checking", "saving"]:
-            accounts = bankAccount.search_accounts(account_type=search_input.lower())
-
-        # Vérifier si c'est un solde (nombre avec décimale possible)
-        else:
-            try:
-                balance = float(search_input)
-                accounts = bankAccount.search_accounts(min_balance=balance, max_balance=balance)
-            except ValueError:
-                flash("Veuillez entrer un ID, un type de compte ou un solde valide.", "danger")
-
-    return render_template('rechercher.html', accounts=accounts)
+        account_id = int(request.args["account_id"]) or None
+        account_type = str(request.args["account_type"]) or None
+        min_balance = float(request.args["min_balance"]) or None
+        max_balance = float(request.args["max_balance"]) or None
+        
+        accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
+        return render_template('rechercher.html', accounts=accounts)
+    return render_template('rechercher.html', accounts=None)
 
 @operation.route('/account/<int:account_id>/history', methods=['GET'])
 def account_history(account_id):

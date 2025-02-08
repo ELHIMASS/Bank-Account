@@ -3,45 +3,139 @@
 {% block title %}Rechercher un Compte{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='Acompt.css') }}">
+
+<style>
+
+
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 1200px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+        border: none;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <h2>Rechercher un compte</h2>
+    <form action="/operation/rechercher" method="GET" class="form-container">
+        <div class="form-group">
+            <label for="account_id">ID du compte :</label>
+            <input type="number" id="account_id" name="account_id">
+        </div>
 
-    <div class="container">
-        <h1>Recherche de Comptes</h1>
+        <div class="form-group">
+            <label for="account_type">Type de compte :</label>
+            <select id="account_type" name="account_type">
+                <option>Tous</option>
+                <option value="cheking">Compte courant</option>
+                <option value="Saving">Compte épargne</option>
+            </select>
+        </div>
 
-        <form method="POST">
-            <div class="form-group">
-                <label for="search_input">Recherche :</label>
-                <input type="text" id="search_input" name="search_input" placeholder="ID, Type (checking/saving) ou Solde">
-            </div>
+        <div class="form-group">
+            <label for="min_balance">Solde minimum :</label>
+            <input type="number" id="min_balance" name="min_balance" step="0.01" min="0">
+        </div>
 
+        <div class="form-group">
+            <label for="max_balance">Solde maximum :</label>
+            <input type="number" id="max_balance" name="max_balance" step="0.01" min="0">
+        </div>
+
+        <div class="form-group">
             <button type="submit">Rechercher</button>
-        </form>
+        </div>
+    </form>
 
-        <hr>
+    <hr>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Account ID</th>
-                    <th>Type de Compte</th>
-                    <th>Solde</th>
-                    <th>Historique</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for compte in accounts %}
-                <tr>
-                    <td>{{ compte.id}}</td>
-                    <td>{{ compte.type_compte }}</td>
-                    <td>{{ compte.balance }} MAD</td>
-                    <td><a href="{{ url_for('operation.account_history', account_id=compte.id) }}">Voir historique</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
+    {% if accounts %}
+    <table>
+        <thead>
+            <tr>
+                <th>Account ID</th>
+                <th>Type de Compte</th>
+                <th>Solde</th>
+                <th>Historique</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for compte in accounts %}
+            <tr>
+                <td>{{ compte.id }}</td>
+                <td>{{ compte.type_compte }}</td>
+                <td>{{ compte.balance }} MAD</td>
+                <td><a href="{{ url_for('operation.account_history', account_id=compte.id) }}">Voir historique</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Aucun compte trouvé.</p>
+    {% endif %}
+</div>
 {% endblock %}

@@ -25,6 +25,11 @@ class BankAccountService:
     def get_by_id(self, id):
         return self.bankAccount_dal.get_by_id(id)
 
+    def search_accounts1(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
+        """Recherche des comptes avec des filtres dynamiques"""
+        return self.bankAccount_dal.search_accounts(account_id, account_type, min_balance, max_balance)
+
+
     def create(self, bankAccount):
         
         if bankAccount.type_compte == "saving" and bankAccount.balance < self.SAVING_AMOUNT:
@@ -36,3 +41,6 @@ class BankAccountService:
 
     def delete(self, bankAccount):
         return self.bankAccount_dal.delete(bankAccount)
+    
+    def search_accounts(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
+         return self.bankAccount_dal.search_accounts(account_id, account_type, min_balance, max_balance)
