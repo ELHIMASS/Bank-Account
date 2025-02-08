@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from app.models.bankAcount_model import BankAccount
 from app.models.dataBase import sessionLocal
 
@@ -34,19 +35,23 @@ class BankAccountDAL:
         self.session.commit()
 
     def search_accounts(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
+        # Construire la requête de base
         query = self.session.query(BankAccount)
 
+        # Ajouter des filtres dynamiques en fonction des paramètres
+        filters = []
         if account_id:
-             return self.get_by_id(account_id)
-        
-        if account_type:
-            query = query.filter(BankAccount.type_compte == account_type)
-        
+            filters.append(BankAccount.id == account_id)
+        if account_type and account_type != "Tous":
+            filters.append(BankAccount.type_compte == account_type)
         if min_balance is not None:
-            query = query.filter(BankAccount.balance >= min_balance)
-        
+            filters.append(BankAccount.balance >= min_balance)
         if max_balance is not None:
-            query = query.filter(BankAccount.balance <= max_balance)
+            filters.append(BankAccount.balance <= max_balance)
 
+        # Appliquer les filtres si nécessaires
+        if filters:
+            query = query.filter(and_(*filters))
+
+        # Exécuter la requête et retourner les résultats
         return query.all()
-    

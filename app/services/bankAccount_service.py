@@ -25,9 +25,29 @@ class BankAccountService:
     def get_by_id(self, id):
         return self.bankAccount_dal.get_by_id(id)
 
-    def search_accounts1(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
-        """Recherche des comptes avec des filtres dynamiques"""
-        return self.bankAccount_dal.search_accounts(account_id, account_type, min_balance, max_balance)
+    def search_accounts(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
+        query = "SELECT * FROM accounts WHERE 1=1"
+        params = []
+
+        if account_id:
+            query += " AND id = %s"
+            params.append(account_id)
+        if account_type and account_type != "Tous":
+            query += " AND type_compte = %s"
+            params.append(account_type)
+        if min_balance is not None:
+            query += " AND balance >= %s"
+            params.append(min_balance)
+        if max_balance is not None:
+            query += " AND balance <= %s"
+            params.append(max_balance)
+
+        cursor = self.db.cursor()
+        cursor.execute(query, tuple(params))
+        results = cursor.fetchall()
+        return results
+
+
 
 
     def create(self, bankAccount):

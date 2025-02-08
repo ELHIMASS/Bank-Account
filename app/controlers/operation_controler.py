@@ -59,17 +59,25 @@ def retirer():
 
 
 
-@operation.route('/rechercher', methods=['GET', 'POST'])
+@operation.route('/rechercher', methods=['GET'])
 def rechercher():
-    if request.method == 'POST':
-        account_id = int(request.args["account_id"]) or None
-        account_type = str(request.args["account_type"]) or None
-        min_balance = float(request.args["min_balance"]) or None
-        max_balance = float(request.args["max_balance"]) or None
-        
-        accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
-        return render_template('rechercher.html', accounts=accounts)
-    return render_template('rechercher.html', accounts=None)
+    account_id = request.args.get('account_id', None)
+    account_type = request.args.get('account_type', None)
+    min_balance = request.args.get('min_balance', None)
+    max_balance = request.args.get('max_balance', None)
+
+    # Convertir les valeurs
+    account_id = int(account_id) if account_id else None
+    min_balance = float(min_balance) if min_balance else None
+    max_balance = float(max_balance) if max_balance else None
+
+    # Recherche des comptes
+    accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
+
+    return render_template('rechercher.html', accounts=accounts)
+
+
+
 
 @operation.route('/account/<int:account_id>/history', methods=['GET'])
 def account_history(account_id):
