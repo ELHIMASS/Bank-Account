@@ -25,34 +25,10 @@ class BankAccountService:
     def get_by_id(self, id):
         return self.bankAccount_dal.get_by_id(id)
 
-    def search_accounts(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
-        query = "SELECT * FROM accounts WHERE 1=1"
-        params = []
-
-        if account_id:
-            query += " AND id = %s"
-            params.append(account_id)
-        if account_type and account_type != "Tous":
-            query += " AND type_compte = %s"
-            params.append(account_type)
-        if min_balance is not None:
-            query += " AND balance >= %s"
-            params.append(min_balance)
-        if max_balance is not None:
-            query += " AND balance <= %s"
-            params.append(max_balance)
-
-        cursor = self.db.cursor()
-        cursor.execute(query, tuple(params))
-        results = cursor.fetchall()
-        return results
-
-
-
 
     def create(self, bankAccount):
         
-        if bankAccount.type_compte == "saving" and bankAccount.balance < self.SAVING_AMOUNT:
+        if bankAccount.type_compte == "saving" and int(bankAccount.balance) < self.SAVING_AMOUNT:
             return "Compte épargne non créé ! Le solde doit être supérieur à 100."
         return self.bankAccount_dal.create(bankAccount)
     

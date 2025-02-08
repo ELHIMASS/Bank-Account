@@ -23,7 +23,7 @@ class OperationDAL:
             raise ValueError("Fonds insuffisants")
 
         transfer = Operation(
-            type_operation="transfer",
+            type="transfer",
             amount=amount,
             sender_account_id=sender_id,
             receiver_account_id=receiver_id
@@ -38,8 +38,8 @@ class OperationDAL:
         self.session.refresh(receiver)
         self.session.refresh(transfer)
 
-        print(f"🔄 Transfert effectué : {amount} MAD de {sender.id} vers {receiver.id}")
-        print(f"💰 Nouveau solde émetteur : {sender.balance} | bénéficiaire : {receiver.balance}")
+        #print(f"🔄 Transfert effectué : {amount} MAD de {sender.id} vers {receiver.id}")
+        #print(f"💰 Nouveau solde émetteur : {sender.balance} | bénéficiaire : {receiver.balance}")
 
     def create_deposit(self, account_id, amount):
         # Récupérer le compte bancaire
@@ -47,23 +47,22 @@ class OperationDAL:
 
         # Créer une opération de dépôt
         deposit = Operation(
-            type_operation="deposit",
+            type="deposit",
             amount=amount,
             bank_account_id=account_id
         )
 
         # Ajouter le montant au solde du compte
-        account.balance += float(amount)
+        account.balance += float(amount) # type: ignore
 
-        # Enregistrer les modifications dans la base de données
         self.session.add(deposit)
         self.session.commit()
         
         self.session.refresh(account)
         self.session.refresh(deposit)
         
-        print(f"💰 Dépôt effectué : {amount} MAD sur le compte {account.id}")
-        print(f"💰 Nouveau solde : {account.balance}")
+        #print(f"💰 Dépôt effectué : {amount} MAD sur le compte {account.id}")
+        #print(f"💰 Nouveau solde : {account.balance}") # type: ignore
 
     def create_retirer(self, account_id, amount):
         account = self.session.query(BankAccount).filter(BankAccount.id == account_id).first()
@@ -76,7 +75,7 @@ class OperationDAL:
 
     # Enregistrer l'opération de retrait
         retireral = Operation(
-            type_operation="retirer",
+            type="retirer",
             amount=amount, 
             bank_account_id=account_id
     )
@@ -93,9 +92,7 @@ class OperationDAL:
         
     
     def search(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
-        """
-        Effectue une recherche avancée avec des filtres optionnels
-        """
+       
         query = self.session.query(BankAccount)
 
         if account_id:
@@ -113,9 +110,7 @@ class OperationDAL:
         return query.all()
     
     def get_operations_by_account(self, account_id):
-        """
-        Récupère toutes les opérations où le compte est impliqué (dépôt, retrait, envoi ou réception de transfert)
-        """
+
         return self.session.query(Operation).filter(
             (Operation.bank_account_id == account_id) |
             (Operation.sender_account_id == account_id) |

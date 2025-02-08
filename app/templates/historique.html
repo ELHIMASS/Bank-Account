@@ -3,46 +3,56 @@
 {% block title %}Historique du Compte{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Historique du Compte {{ account.id }}</h1>
+    <div class="container mt-4" style="display: flex; flex-direction: column;">
+        <h1 class="mb-4">Historique du Compte {{ account.id }}</h1>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID Opération</th>
-                    <th>Type</th>
-                    <th>Montant</th>
-                    <th>Expéditeur</th>
-                    <th>Bénéficiaire</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for operation in history %}
-                <tr>
-                    <td>{{ operation.id }}</td>
-                    <td>{{ operation.type_operation }}</td>
-                    <td>{{ operation.amount }} MAD</td>
-                    <td>
-                        {% if operation.sender_account_id %}
-                            {{ operation.sender_account_id }}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Opération</th>
+                        <th>Type</th>
+                        <th>Montant</th>
+                        <th>Expéditeur</th>
+                        <th>Récepteur</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for operation in history %}
+                    <tr>
+                        <td>{{ operation.id }}</td>
+                        <td>{{ operation.type_operation | capitalize }}</td>
+                        {% if account.id == operation.sender_account_id %}
+                            <td class="fw-bold text-danger">-{{ operation.amount }} MAD</td>
                         {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if operation.receiver_account_id %}
-                            {{ operation.receiver_account_id }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>{{ operation.date }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                            <td class="fw-bold text-success">+{{ operation.amount }} MAD</td>
+                        {% endif %}    
 
-        <a href="{{ url_for('operation.rechercher') }}">Retour à la recherche</a>
+                        
+                        <td>
+                            {% if operation.sender_account_id %}
+                                {{ operation.sender_account_id }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if operation.receiver_account_id %}
+                                {{ operation.receiver_account_id }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ operation.date.strftime('%d/%m/%Y %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('operation.rechercher') }}" class="btn btn-primary mt-3">
+            Retour à la recherche
+        </a>
     </div>
 {% endblock %}

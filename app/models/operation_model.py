@@ -1,24 +1,27 @@
-from sqlalchemy import Column, Integer, Float, Enum, ForeignKey
+from sqlalchemy import Column, Integer, Float, ForeignKey, Enum, DateTime, func
 from sqlalchemy.orm import relationship
-from app.models.dataBase import Base
+from app import Base
 
 class Operation(Base):
     __tablename__ = 'operations'
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
-    bank_account_id = Column(Integer, ForeignKey('bank_accounts.id', ondelete='CASCADE'))
-    type_operation = Column(Enum('deposit', 'withdraw', 'transfer', name='operation_type'), nullable=False)
     amount = Column(Float, nullable=False)
-    sender_account_id = Column(Integer, ForeignKey('bank_accounts.id', ondelete='SET NULL'), nullable=True)
-    receiver_account_id = Column(Integer, ForeignKey('bank_accounts.id', ondelete='SET NULL'), nullable=True)
-    # Relation avec BankAccount
+    type = Column(Enum('deposit', 'withdrawal', 'transfer', name='operation_type'), nullable=False)
+    date = Column(DateTime, default=func.now(), nullable=False)
+
+    # Clé étrangère pour le compte bancaire (récepteur et expéditeur)
+    bank_account_id = Column(Integer, ForeignKey('bank_accounts.id'), nullable=True)
+    sender_account_id = Column(Integer, ForeignKey('bank_accounts.id'), nullable=True)
+    receiver_account_id = Column(Integer, ForeignKey('bank_accounts.id'), nullable=True)
+
+    # Relations avec les comptes bancaires
     bank_account = relationship(
         "BankAccount",
-        back_populates="operations",
+        back_populates="operations",  # Référence à 'operations' dans BankAccount
         foreign_keys=[bank_account_id]
     )
 
-    # Relations pour les transferts
     sender_account = relationship(
         "BankAccount",
         back_populates="sent_operations",

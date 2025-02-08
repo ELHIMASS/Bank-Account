@@ -15,6 +15,8 @@ def make_session_permanent():
     session.permanent = True
     current_app.permanent_session_lifetime = timedelta(minutes=5)
 
+from flask import session, redirect, url_for, flash
+
 @bankAccount.route('/ajouter', methods=['GET', 'POST'])
 def ajouter():
     if session.get("username") == "admin":
@@ -22,13 +24,19 @@ def ajouter():
             balance = request.form.get("balance")
             type_compte = request.form.get("type_compte")
             intereste_rate = request.form.get("interest_rate", None)
+
+            
+
             tmp = BankAccount(balance=balance, type_compte=type_compte, interest_rate=intereste_rate)
             bank_service.create(tmp)
+            flash("Compte bancaire ajouté avec succès", "success")
             return render_template('index.html')
 
         return render_template('Acompt.html')
     else:
         abort(404)
+
+
 
 @bankAccount.route('/suprimer', methods=['GET', 'POST'])
 def supprimer():

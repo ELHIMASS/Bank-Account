@@ -34,15 +34,21 @@ if __name__ == '__main__':
     # Récupère tous les utilisateurs
     users = session.query(User).all()
     for user in users:
-        print(user)
+    print(user)
+        Operation.__table__.drop(engine)
+    Base.metadata.create_all(engine)
+        
 """
 from flask import Flask,render_template,Blueprint
 from app.controlers.user_controler import user 
 from app.controlers.BankAccount_controller import bankAccount
 from app.controlers.operation_controler import operation
-from app import app
+from app.models.operation_model import Operation
+from app.models.bankAcount_model import BankAccount
+from app.models.user_model import User, Base
+from app import app, engine
 import secrets
-
+ 
 
 
 if __name__ == '__main__':

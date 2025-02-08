@@ -10,7 +10,7 @@ class BankAccountDAL:
         return self.session.query(BankAccount).all()
     
     def get_saving(self):
-        return self.session.query(BankAccount).filter(BankAccount.type_compte == "saving").all()
+        return self.session.query(BankAccount).filter(BankAccount.type_compte == "Saving").all()
     
     def get_cheking(self):
         return self.session.query(BankAccount).filter(BankAccount.type_compte == "cheking").all()

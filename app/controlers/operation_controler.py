@@ -61,6 +61,7 @@ def retirer():
 
 @operation.route('/rechercher', methods=['GET'])
 def rechercher():
+    
     account_id = request.args.get('account_id', None)
     account_type = request.args.get('account_type', None)
     min_balance = request.args.get('min_balance', None)
@@ -73,7 +74,6 @@ def rechercher():
 
     # Recherche des comptes
     accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
-
     return render_template('rechercher.html', accounts=accounts)
 
 
@@ -85,9 +85,8 @@ def account_history(account_id):
 
     if not account:
         flash("Compte introuvable", "danger")
-        return redirect(url_for('operation.rechercher'))  # Correction ici
+        return redirect(url_for('operation.rechercher'))
 
-    # Récupérer toutes les opérations de ce compte
     history = op.get_operations_by_account(account_id)
 
     return render_template('historique.html', account=account, history=history)
