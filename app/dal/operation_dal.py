@@ -34,6 +34,12 @@ class OperationDAL:
 
         self.session.add(transfer)
         self.session.commit()
+        self.session.refresh(sender)
+        self.session.refresh(receiver)
+        self.session.refresh(transfer)
+
+        print(f"🔄 Transfert effectué : {amount} MAD de {sender.id} vers {receiver.id}")
+        print(f"💰 Nouveau solde émetteur : {sender.balance} | bénéficiaire : {receiver.balance}")
 
     def create_deposit(self, account_id, amount):
         # Récupérer le compte bancaire
@@ -52,6 +58,12 @@ class OperationDAL:
         # Enregistrer les modifications dans la base de données
         self.session.add(deposit)
         self.session.commit()
+        
+        self.session.refresh(account)
+        self.session.refresh(deposit)
+        
+        print(f"💰 Dépôt effectué : {amount} MAD sur le compte {account.id}")
+        print(f"💰 Nouveau solde : {account.balance}")
 
     def create_retirer(self, account_id, amount):
         account = self.session.query(BankAccount).filter(BankAccount.id == account_id).first()
@@ -73,6 +85,11 @@ class OperationDAL:
 
         self.session.add(retireral)
         self.session.commit()
+        
+        self.session.refresh(account)
+        self.session.refresh(retireral)
+        
+        
         
     
     def search(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
@@ -106,7 +123,7 @@ class OperationDAL:
         ).order_by(Operation.id.desc()).all()
 
 
-   
+    
     def create(self, operation):
         self.session.add(operation)
         self.session.commit()

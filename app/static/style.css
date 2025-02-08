@@ -196,3 +196,16 @@
 .card4:hover .go-arrow {
     opacity: 1;
 }
+
+.dropdown2 {
+    display: inline-block;
+    position: relative;
+    margin: 0 12px;
+    margin-left: 37px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}

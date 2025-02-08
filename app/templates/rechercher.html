@@ -34,7 +34,7 @@
             <tbody>
                 {% for compte in accounts %}
                 <tr>
-                    <td>{{ compte.id }}</td>
+                    <td>{{ compte.id}}</td>
                     <td>{{ compte.type_compte }}</td>
                     <td>{{ compte.balance }} MAD</td>
                     <td><a href="{{ url_for('operation.account_history', account_id=compte.id) }}">Voir historique</a></td>

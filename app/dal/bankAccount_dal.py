@@ -16,6 +16,9 @@ class BankAccountDAL:
 
     def get_by_id(self, id):
         return self.session.query(BankAccount).get(id)
+    
+
+
 
     def create(self, bankAccount:BankAccount):
         self.session.add(bankAccount)

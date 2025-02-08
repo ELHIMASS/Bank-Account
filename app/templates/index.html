@@ -50,7 +50,7 @@
                 {% if 'username' in session %}
                         <!-- Si l'utilisateur est connecté -->
                         <div class="dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" style="color :black" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ session['username'] }} <!-- Afficher le nom de l'utilisateur -->
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -71,19 +71,61 @@
     </nav>
     
 </header>
+
+
+  
+    
+
     {% block content %}
-        <div class="card">
-            <a class="card1" href="#">
-            <p>This is heading</p>
-            <p class="small">Card description with lots of great facts and interesting details.</p>
-            <div class="go-corner" href="#">
-            <div class="go-arrow">
-                →
-            </div>
-            </div>
-        </a>
+    <div class="container">
+
+        {% if 'username' in session %}
+        <div class="dropdown1">
+            <!--ajouter une photo de profile-->
+    
+            <img src="{{ url_for('static', filename='pic/profil.jpg') }}" alt="not found" style="width: 150px; height: 150px; border-radius: 50%;padding : 30px;">
+    
+    
+    
         </div>
-    {% endblock %}
+    
+        {% endif %}
+    
+    
+        <form class="form">
+    
+            {% if 'username' in session %}
+    
+           
+                    <!-- Si l'utilisateur est connecté -->
+                    <div class="dropdown2">
+                        <a class="nav-link dropdown" href="#" style="color: black;" >
+                            {{ session['username'] }} <!-- Afficher le nom de l'utilisateur -->
+                        </a>
+                        <div style="width: 150px;">
+                        </div>
+                    </div>
+    
+            
+            
+            {% endif %}
+            </form>
+    
+        </div>
+    <div class="card">
+        <a class="card1" href="#">
+        <p>This is heading</p>
+        <p class="small">Card description with lots of great facts and interesting details.</p>
+        <div class="go-corner" href="#">
+        <div class="go-arrow">
+            →
+        </div>
+        </div>
+    </a>
+    </div>
+{% endblock %}
+
+
     
     
 </body>

@@ -5,9 +5,7 @@
     box-sizing: border-box;
 }
 
-
-
-.container {
+.container{
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -15,6 +13,8 @@
     width: 100%;
     max-width: 400px;
     margin-top: 70px;
+    align-content: center;
+    margin-left: 420px;
 }
 
 h1 {
