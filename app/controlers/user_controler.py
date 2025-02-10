@@ -46,7 +46,7 @@ def logout():
 
 
 
-@user.route('/ajouter', methods=['GET', 'POST'])
+@user.route('/ajouter1', methods=['GET', 'POST'])
 def ajouter():
     if request.method == "POST":
         username = request.form.get("username")
@@ -65,6 +65,6 @@ def ajouter():
             return redirect(url_for('index'))  # Redirection vers la page d'accueil
         except Exception as e:
             flash(f"Erreur lors de la création de l'utilisateur : {e}", "danger")
-            return redirect(url_for('user.ajouter'))
+            return redirect(url_for('index.html'))
 
     return render_template('adduser.html')
