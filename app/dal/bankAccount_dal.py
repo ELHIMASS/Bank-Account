@@ -1,4 +1,5 @@
 from sqlalchemy import and_
+from app.models.user_model import User
 from app.models.bankAcount_model import BankAccount
 from app.models.dataBase import sessionLocal
 
@@ -55,3 +56,10 @@ class BankAccountDAL:
 
         # Exécuter la requête et retourner les résultats
         return query.all()
+    
+    def get_all_accounts_by_user(self, user_id):
+        user =  self.session.query(User).filter(User.id == user_id).one_or_none()
+        if user:
+            return user.bank_accounts
+        else:
+            return []
