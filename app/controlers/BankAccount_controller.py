@@ -40,6 +40,7 @@ def ajouter():
 
 @bankAccount.route('/suprimer', methods=['GET', 'POST'])
 def supprimer():
+    
     if session.get("username") == "admin":
         if request.method == "POST":
             id = request.form.get("id")
