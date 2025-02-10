@@ -17,6 +17,7 @@ def make_session_permanent():
 
 @user.route('/')
 def index():
+    
     return render_template('index.html')
 
 @user.route('/connection', methods=['GET', 'POST'])
@@ -29,7 +30,7 @@ def login():
         if user :
             session.permanent = True  # Active la session persistante
             session["username"] = user.name  # Stocke le nom d'utilisateur dans la session
-            flash("Connexion réussie !", "success")
+            session["isAdmin"] = user.is_admin
             return redirect(url_for("user.index"))
         else:
             return redirect(url_for("user.login"))
