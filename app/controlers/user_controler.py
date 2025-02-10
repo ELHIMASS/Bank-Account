@@ -43,3 +43,28 @@ def logout():
     session.pop("username", None)  # Supprime l'utilisateur de la session
     flash("Vous avez été déconnecté.", "info")
     return redirect(url_for("user.index"))
+
+
+
+@user.route('/ajouter', methods=['GET', 'POST'])
+def ajouter():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        # Vérification de la correspondance des mots de passe
+        if password != confirm_password:
+            flash("Les mots de passe ne correspondent pas.", "danger")
+            return redirect(url_for('user.ajouter'))
+
+        # Simulation de l'ajout de l'utilisateur (remplacez par votre logique de base de données)
+        try:
+            # Ajoutez votre logique d'ajout à la base ici
+            flash(f"Utilisateur '{username}' créé avec succès !", "success")
+            return redirect(url_for('index'))  # Redirection vers la page d'accueil
+        except Exception as e:
+            flash(f"Erreur lors de la création de l'utilisateur : {e}", "danger")
+            return redirect(url_for('user.ajouter'))
+
+    return render_template('adduser.html')
