@@ -36,9 +36,9 @@ def login():
 
         user = user_service.get_by_name(username)
         if user :
-            session.permanent = True  # Active la session persistante
+            session.permanent = True  
             session["id"] = user.id
-            session["username"] = user.name  # Stocke le nom d'utilisateur dans la session
+            session["username"] = user.name  
             session["isAdmin"] = user.is_admin
             return redirect(url_for("user.index"))
         else:
@@ -49,7 +49,7 @@ def login():
 
 @user.route('/logout')
 def logout():
-    session.pop("username", None)  # Supprime l'utilisateur de la session
+    session.pop("username", None)  
     flash("Vous avez été déconnecté.", "info")
     return redirect(url_for("user.index"))
 

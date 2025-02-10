@@ -24,13 +24,18 @@
                         <td>{{ operation.id }}</td>
 
                         <td>{{ operation.type | capitalize }}</td>
-                        {% if account.id == operation.sender_account_id %}
+
+                        {% if operation.type  == "transfer" %}
+                            {% if account.id == operation.sender_account_id %}
+                                <td class="fw-bold text-danger">-{{ operation.amount }} MAD</td>
+                            {% else %}
+                                <td class="fw-bold text-success">+{{ operation.amount }} MAD</td>
+                            {% endif %}    
+                        {% elif  operation.type  == "withdrawal" %}
                             <td class="fw-bold text-danger">-{{ operation.amount }} MAD</td>
                         {% else %}
                             <td class="fw-bold text-success">+{{ operation.amount }} MAD</td>
-                        {% endif %}    
-                        
-                        
+                        {% endif %}     
                         <td>
                             {% if operation.sender_account_id %}
                                 {{ operation.sender_account_id }}
