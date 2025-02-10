@@ -7,8 +7,7 @@ from flask import current_app
 
 
 operation = Blueprint('operation', __name__)
-bankAccount = BankAccountService()
-op = OperationService()
+
 
 
 @operation.before_request
@@ -18,6 +17,8 @@ def make_session_permanent():
 
 @operation.route('/transfer', methods=['GET', 'POST'])
 def transfer():
+    bankAccount = BankAccountService()
+    op = OperationService()
     if request.method == 'POST':
         sender_id = request.form['sender_account']
         receiver_id = request.form['receiver_account']
@@ -33,6 +34,8 @@ def transfer():
 
 @operation.route('/deposer', methods=['GET', 'POST'])
 def deposer():
+    bankAccount = BankAccountService()
+    op = OperationService()
     if request.method == 'POST':
         account_id = request.form['id_account']
         amount = request.form['amount']
@@ -45,6 +48,8 @@ def deposer():
 
 @operation.route('/retirer', methods=['GET', 'POST'])
 def retirer():
+    bankAccount = BankAccountService()
+    op = OperationService()
     if request.method == 'POST':
         account_id = request.form['id_account']
         amount = float(request.form['amount'])
@@ -61,7 +66,8 @@ def retirer():
 
 @operation.route('/rechercher', methods=['GET'])
 def rechercher():
-    
+    bankAccount = BankAccountService()
+
     account_id = request.args.get('account_id', None)
     account_type = request.args.get('account_type', None)
     min_balance = request.args.get('min_balance', None)
@@ -81,6 +87,9 @@ def rechercher():
 
 @operation.route('/account/<int:account_id>/history', methods=['GET'])
 def account_history(account_id):
+    bankAccount = BankAccountService()
+    op = OperationService()
+    
     account = bankAccount.get_by_id(account_id)
 
     if not account:

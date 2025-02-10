@@ -24,10 +24,10 @@ def ajouter():
             balance = request.form.get("balance")
             type_compte = request.form.get("type_compte")
             intereste_rate = request.form.get("interest_rate", None)
-
+            user_id = request.form.get("id_user")
             
 
-            tmp = BankAccount(balance=balance, type_compte=type_compte, interest_rate=intereste_rate)
+            tmp = BankAccount(balance=balance, type_compte=type_compte, interest_rate=intereste_rate, user_id=user_id)
             bank_service.create(tmp)
             flash("Compte bancaire ajouté avec succès", "success")
             return render_template('index.html')
@@ -40,6 +40,7 @@ def ajouter():
 
 @bankAccount.route('/suprimer', methods=['GET', 'POST'])
 def supprimer():
+    
     if session.get("username") == "admin":
         if request.method == "POST":
             id = request.form.get("id")

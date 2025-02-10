@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+
+{% block title %}Créer Utilisateur{% endblock %}
+
+{% block style %}
+<style>
+    .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Créer un Utilisateur</h1>
+    <form action="#" method="POST">
+        <!-- Champ pour le nom d'utilisateur -->
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="username" placeholder="Entrez le nom d'utilisateur" required>
+        </div>
+        <!-- Champ pour le mot de passe -->
+        <div class="form-group">
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" placeholder="Entrez le mot de passe" required>
+        </div>
+        <!-- Champ pour la confirmation du mot de passe -->
+        <div class="form-group">
+            <label for="confirm_password">Confirmez le mot de passe :</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmez le mot de passe" required>
+        </div>
+        <!-- Bouton de soumission -->
+        <button type="submit">Créer l'utilisateur</button>
+    </form>
+</div>
+{% endblock %}

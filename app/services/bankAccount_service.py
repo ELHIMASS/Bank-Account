@@ -40,3 +40,6 @@ class BankAccountService:
     
     def search_accounts(self, account_id=None, account_type=None, min_balance=None, max_balance=None):
          return self.bankAccount_dal.search_accounts(account_id, account_type, min_balance, max_balance)
+    
+    def get_all_accounts_by_user(self, id_user):
+        return self.bankAccount_dal.get_all_accounts_by_user(id_user)
