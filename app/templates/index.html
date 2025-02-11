@@ -44,51 +44,6 @@
     
 </head>
 
-<<<<<<< HEAD
-       
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            
-            <ul class="navbar-nav mx-auto"> 
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/compte/ajouter">Cree compte<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ajouter1">Creer utilisateur<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/compte/suprimer">Supprimer compte<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Plus
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/operation/transfer">Transfer</a>
-                        <a class="dropdown-item" href="/operation/deposer">Deposer</a>
-                        <a class="dropdown-item" href="/operation/retirer">Retirer</a>
-                        <a class="dropdown-item" href="/operation/rechercher">Rechercher</a>
-                    </div>
-                </li>
-            </ul>
-            
-            <form class="form-inline my-2 my-lg-0">
-                {% if 'username' in session %}
-                        <!-- Si l'utilisateur est connecté -->
-                        <div class="dropdown">
-                            <a class="nav-link dropdown-toggle" style="color :black" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ session['username'] }} <!-- Afficher le nom de l'utilisateur -->
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                                <a class="dropdown-item" href="/logout">Déconnexion</a>
-                            </div>
-                            <div style="width: 150px;">
-                            </div>
-                        </div>
-=======
 <body>
     <header>
 
@@ -135,13 +90,12 @@
                             <a class="dropdown-item" href="/operation/rechercher">Rechercher</a>
                         </div>
                     </li>
->>>>>>> 55d12a8c75c537066742e98d571b060a7aa621ed
                     {% else %}
                     <li class="nav-item active">
                         <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Transferer<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/operation/transfer">Transferer<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Retirer<span class="sr-only">(current)</span></a>
@@ -178,11 +132,6 @@
         </nav>
 
     </header>
-
-
-
-
-
     {% block content %}
   {% if 'username' in session %}
     <div class="container">

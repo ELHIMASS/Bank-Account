@@ -19,17 +19,32 @@ def make_session_permanent():
 def transfer():
     bankAccount = BankAccountService()
     op = OperationService()
-    if request.method == 'POST':
-        sender_id = request.form['sender_account']
-        receiver_id = request.form['receiver_account']
-        amount = float(request.form['amount'])
-        # ajoiute un transfer et modifie le montant des deux compte
-        op.create_transfer(sender_id, receiver_id, amount)
+    if session["isAdmin"] == True:
+        
+        if request.method == 'POST':
+            sender_id = request.form['sender_account']
+            receiver_id = request.form['receiver_account']
+            amount = float(request.form['amount'])
+            # ajoiute un transfer et modifie le montant des deux compte
+            op.create_transfer(sender_id, receiver_id, amount)
 
-        return render_template('index.html')
-    
-    acounts = bankAccount.get_cheking()
-    return render_template('transfer.html', acounts=acounts)
+            return redirect(url_for("user.index"))
+        
+        acounts = bankAccount.get_cheking()
+        return render_template('transfer.html', acounts=acounts)
+    else:
+        if request.method == 'POST':
+            sender_id = request.form['sender_account']
+            receiver_id = request.form['receiver_account']
+            amount = float(request.form['amount'])
+            # ajoiute un transfer et modifie le montant des deux compte
+            op.create_transfer(sender_id, receiver_id, amount)
+
+            return redirect(url_for("user.index"))
+        
+        acounts = bankAccount.get_all_accounts_by_user(session["id"])
+        return render_template('transfer.html', acounts=acounts)
+        
 
 
 @operation.route('/deposer', methods=['GET', 'POST'])

@@ -8,8 +8,7 @@ from flask import current_app
 
 
 user = Blueprint('user', __name__)
-user_service = UserService()
-bank= BankAccountService()
+
 
 
 @user.before_request
@@ -19,6 +18,7 @@ def make_session_permanent():
 
 @user.route('/')
 def index():
+    bank= BankAccountService()
     if "username" in session:
         if session["isAdmin"] == True:
             return render_template('index.html')
@@ -30,6 +30,8 @@ def index():
 
 @user.route('/connection', methods=['GET', 'POST'])
 def login():
+    user_service = UserService()
+    
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -55,6 +57,7 @@ def logout():
 
 @user.route('/creatUser', methods=['GET', 'POST'])
 def creatUser():
+    user_service = UserService()
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")

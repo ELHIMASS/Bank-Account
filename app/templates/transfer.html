@@ -23,18 +23,25 @@
                 </select>
             </div>
 
-            <!-- Compte reçoit -->
-            <div class="form-group">
-                <label for="receiver_account">Compte reçoit :</label>
-                <select id="receiver_account" name="receiver_account" required>
-                    {% for compte in acounts %}
-                        {% if compte.type_compte == "cheking" %}
-                            <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
+            {% if session['isAdmin'] == false %}
+                <div class="form-group">
+                    <label for="receiver_account">Compte reçoit :</label>
+                    <input type="number" id="receiver_account" name="receiver_account" min="0" step="1" required>
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <label for="receiver_account">Compte reçoit :</label>
+                    <select id="receiver_account" name="receiver_account" required>
+                        {% for compte in acounts %}
+                            {% if compte.type_compte == "cheking" %}
+                                <option value="{{ compte.id }}">Compte {{ compte.id }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
 
+            {% endif %}
+            
             <!-- Montant -->
             <div class="form-group">
                 <label for="amount">Montant :</label>
