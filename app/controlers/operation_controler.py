@@ -122,11 +122,13 @@ def rechercher():
 
         # Recherche des comptes
         accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
-        logger.log("info", f"Recherche de compte avec les paramètres suivants: {account_id}, {account_type}, {min_balance}, {max_balance} .")
-        return render_template('rechercher.html', accounts=accounts)
+
+        # Trier les comptes par solde (balance)
+        accounts_sorted = sorted(accounts, key=lambda x: x.balance, reverse=False)  # Ascendant
+        logger.log("info", f"Recherche de compte avec les paramètres suivants: {account_id}, {account_type}, {min_balance}, {max_balance}. Trié par balance.")
+        return render_template('rechercher.html', accounts=accounts_sorted)
     else:
         abort(404)
-
 
 
 #done ?? log
