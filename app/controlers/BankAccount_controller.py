@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, Blueprint, session, abort
 from datetime import timedelta
+from app.Logger.logger import Logger
 from app.services.bankAccount_service import BankAccountService
 from app.models.bankAcount_model import BankAccount
 
@@ -7,7 +8,9 @@ from flask import current_app
 
 
 bankAccount = Blueprint('bankAccount', __name__)
+logger = Logger("app.log")
 bank_service = BankAccountService()
+
 
 
 @bankAccount.before_request
@@ -29,8 +32,9 @@ def ajouter():
 
             tmp = BankAccount(balance=balance, type_compte=type_compte, interest_rate=intereste_rate, user_id=user_id)
             bank_service.create(tmp)
-            flash("Compte bancaire ajouté avec succès", "success")
+            logger.log("info", f"Compte bancaire ajouté avec succès {tmp.id} .")
             return render_template('index.html')
+        
 
         return render_template('Acompt.html')
     else:
@@ -46,7 +50,9 @@ def supprimer():
             id = request.form.get("id")
 
             bank_service.delete(bank_service.get_by_id(id))
+            logger.log("info", f"Compte bancaire supprimé avec succès {id} .")
             return render_template('index.html')
+        
 
         return render_template('Scompt.html')
     else:

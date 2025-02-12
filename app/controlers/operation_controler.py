@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, Blueprint, session
+from flask import Flask, render_template, request, redirect, url_for, flash, Blueprint, session,abort
+from app.Logger.logger import Logger
 from app.services.bankAccount_service import BankAccountService
 from app.services.operation_service import OperationService
 from app.models.operation_model import Operation
@@ -7,6 +8,7 @@ from flask import current_app
 
 
 operation = Blueprint('operation', __name__)
+logger = Logger("app.log")
 
 
 
@@ -28,6 +30,7 @@ def transfer():
             amount = float(request.form['amount'])
             # ajoiute un transfer et modifie le montant des deux compte
             op.create_transfer(sender_id, receiver_id, amount)
+            logger.log("info", f"Transfère réussi de {sender_id} à {receiver_id} de {amount} MAD .")
 
             return redirect(url_for("user.index"))
         
@@ -40,6 +43,7 @@ def transfer():
             amount = float(request.form['amount'])
             # ajoiute un transfer et modifie le montant des deux compte
             op.create_transfer(sender_id, receiver_id, amount)
+            logger.log("info", f"Transfère réussi de {sender_id} à {receiver_id} de {amount} MAD .")
 
             return redirect(url_for("user.index"))
         
@@ -58,12 +62,14 @@ def deposer():
             amount = request.form['amount']
 
             op.create_deposit(account_id, amount)
+            logger.log("info", f"Depot de {amount} MAD sur le compte {account_id} .")
             return redirect(url_for("user.index"))
         
         acounts = bankAccount.get_all()
         return render_template('deposer.html', acounts=acounts)
     else:
-        return "tu n'est pas admin "
+        logger.log("warning", "Accés refusé.")
+        abort(404)
 
 
 #done ?? log
@@ -78,10 +84,12 @@ def retirer():
             
             # Exécuter l'opération de retrait
             op.create_retirer(account_id, amount)
+            logger.log("info", f"Retrait de {amount} MAD sur le compte {account_id} .")
 
             return redirect(url_for("user.index"))
 
         accounts = bankAccount.get_cheking()  # Récupérer les comptes disponibles
+
         return render_template('retirer.html', accounts=accounts)
     else:
         if request.method == 'POST':
@@ -89,6 +97,7 @@ def retirer():
             amount = float(request.form['amount'])
             
             op.create_retirer(account_id, amount)
+            logger.log("info", f"Retrait de {amount} MAD sur le compte {account_id} .")
 
             return redirect(url_for("user.index"))
         # recupere les compte lier au user
@@ -113,9 +122,10 @@ def rechercher():
 
         # Recherche des comptes
         accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
+        logger.log("info", f"Recherche de compte avec les paramètres suivants: {account_id}, {account_type}, {min_balance}, {max_balance} .")
         return render_template('rechercher.html', accounts=accounts)
     else:
-        return "tu n'est pas un admin"
+        abort(404)
 
 
 
@@ -130,13 +140,15 @@ def account_history(account_id):
 
         if not account:
             flash("Compte introuvable", "danger")
+            logger.log("warning", f"Compte introuvable {account_id} .")
             return redirect(url_for('operation.rechercher'))
 
         history = op.get_operations_by_account(account_id)
+        logger.log("info", f"Affichage de l'historique du compte {account_id} .")
 
         return render_template('historique.html', account=account, history=history)
     else:
-        return "tu n'est pas un admin"
+        abort(404)
     
     
     
@@ -146,6 +158,7 @@ def account_history(account_id):
 def user_history():
     if "id" not in session:
         flash("Veuillez vous connecter pour voir l'historique.", "danger")
+        logger.log("warning", "Tentative de connexion suspecte détectée.")
         return redirect(url_for("user.login"))
 
     user_id = session["id"]  # ID de l'utilisateur connecté
@@ -157,12 +170,14 @@ def user_history():
 
     if not accounts:
         flash("Aucun compte trouvé pour cet utilisateur.", "info")
+        logger.log("warning", "Aucun compte trouvé pour cet utilisateur.")
         return redirect(url_for("user.index"))
 
     # Récupérer les historiques de chaque compte
     history = {}
     for account in accounts:
         history[account.id] = operation_service.get_operations_by_account(account.id)
+        logger.log("info", f"Affichage de l'historique du compte {account.id} .")
 
     return render_template("user_history.html", accounts=accounts, history=history)
 
