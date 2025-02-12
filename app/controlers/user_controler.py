@@ -14,7 +14,7 @@ user = Blueprint('user', __name__)
 @user.before_request
 def make_session_permanent():
     session.permanent = True
-    current_app.permanent_session_lifetime = timedelta(minutes=5)
+    current_app.permanent_session_lifetime = timedelta(minutes=10)
 
 @user.route('/')
 def index():
@@ -93,3 +93,6 @@ def ajouter():
             return redirect(url_for('index.html'))
 
     return render_template('adduser.html')
+
+
+

@@ -1,4 +1,7 @@
 from app.dal.operation_dal import OperationDAL
+from app.models.bankAcount_model import BankAccount
+from app.models.operation_model import Operation
+from app.models.dataBase import sessionLocal
 
 
 class OperationService:
@@ -31,8 +34,21 @@ class OperationService:
         """Récupère toutes les opérations d'un compte donné"""
         return self.operation_dal.get_operations_by_account(account_id)
     
+    
     def update(self, operation):
         return self.operation_dal.update(operation)
 
     def delete(self, operation):
-        return self.operation_dal.delete(operation)    
+        return self.operation_dal.delete(operation)  
+    
+    
+    def get_all_accounts_by_user(self, user_id):
+        db_session = sessionLocal()
+        try:
+            return db_session.query(BankAccount).filter_by(user_id=user_id).all()
+        finally:
+            db_session.close()
+  
+    
+    
+  

@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+
+{% block title %}Historique des Comptes{% endblock %}
+
+{% block content %}
+    <div class="container mt-4" style="display: flex; flex-direction: column;">
+        <h1 class="mb-4">Historique des Comptes</h1>
+        {% for account in accounts %}
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h3>Compte ID: {{ account.id }} ({{ account.type_compte | capitalize }})</h3>
+                <p class="mb-0">Solde: <span class="fw-bold">{{ account.balance }} MAD</span></p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>Type d'opération</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if history[account.id] %}
+                            {% for operation in history[account.id] %}
+                            <tr>
+                                <td>{{ operation.date.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td>{{ operation.type | capitalize }}</td>
+                                {% if operation.type == "transfer" %}
+                                    {% if account.id == operation.sender_account_id %}
+                                        <td class="fw-bold text-danger">-{{ operation.amount }} MAD</td>
+                                    {% else %}
+                                        <td class="fw-bold text-success">+{{ operation.amount }} MAD</td>
+                                    {% endif %}
+                                {% elif operation.type == "withdrawal" %}
+                                    <td class="fw-bold text-danger">-{{ operation.amount }} MAD</td>
+                                {% else %}
+                                    <td class="fw-bold text-success">+{{ operation.amount }} MAD</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="3">Aucune opération trouvée pour ce compte.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <a href="/" class="btn btn-primary mt-3">
+            Retour à l'accueil
+        </a>
+    </div>
+{% endblock %}

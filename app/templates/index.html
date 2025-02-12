@@ -11,20 +11,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .styled-table {
-            width: 100%;
+            width: 50%;
             border-collapse: collapse;
             margin: 25px 0;
             font-size: 18px;
             text-align: left;
+            border: 2px solid rgb(150, 144, 144);
         }
         .styled-table thead tr {
-            background-color: #009879;
+            background-color: black;
             color: #ffffff;
             text-align: left;
         }
-        .styled-table th,
+        .styled-table th {
+          padding: 12px 15px;
+          background-color: rgb(150, 144, 144);
+        }
         .styled-table td {
             padding: 12px 15px;
+            background-color: white;
+            
         }
         .styled-table tbody tr {
             border-bottom: 1px solid #dddddd;
@@ -32,12 +38,11 @@
         .styled-table tbody tr:nth-of-type(even) {
             background-color: #f3f3f3;
         }
-        .styled-table tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
+        .styled-table tbody tr {
+            border-bottom: 2px solid rgb(150, 144, 144);
+            
         }
-        .styled-table tbody tr:hover {
-            background-color: #f1f1f1;
-        }
+        
     </style>
     
     {% endblock %}
@@ -49,8 +54,11 @@
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-            <a class="navbar-brand" href="/">
-                <h1>BANK</h1>
+            <a class="navbar-brand" href="/" style="display: flex;margin-left: 10px;">
+                <img src="{{ url_for('static', filename='bank.png') }}" width="60" height="45" class="d-inline-block align-top"
+                    alt="">
+                    <h1 style="margin-left: 20px;">BANK</h1>
+                
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,8 +109,8 @@
                         <a class="nav-link" href="/operation/retirer">Retirer<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Voir Historique<span class="sr-only">(current)</span></a>
-                    </li>
+                      <a class="nav-link" href="{{ url_for('operation.user_history') }}">Voir Historique<span class="sr-only">(current)</span></a>
+                       </li>
                     {% endif %}
                 </ul>
 
@@ -147,7 +155,7 @@
     </div>
     {% if not session['isAdmin'] %}
       {% if accounts %}
-        <section>
+        <section class="tab">
           <h3>Vos comptes :</h3>
           <table class="styled-table">
             <thead>

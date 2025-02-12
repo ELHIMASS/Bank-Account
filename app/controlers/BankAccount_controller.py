@@ -13,7 +13,7 @@ bank_service = BankAccountService()
 @bankAccount.before_request
 def make_session_permanent():
     session.permanent = True
-    current_app.permanent_session_lifetime = timedelta(minutes=5)
+    current_app.permanent_session_lifetime = timedelta(minutes=10)
 
 from flask import session, redirect, url_for, flash
 

@@ -13,7 +13,7 @@ operation = Blueprint('operation', __name__)
 @operation.before_request
 def make_session_permanent():
     session.permanent = True
-    current_app.permanent_session_lifetime = timedelta(minutes=5)
+    current_app.permanent_session_lifetime = timedelta(minutes=10)
 
 #done ?? log
 @operation.route('/transfer', methods=['GET', 'POST'])
@@ -137,6 +137,33 @@ def account_history(account_id):
         return render_template('historique.html', account=account, history=history)
     else:
         return "tu n'est pas un admin"
+    
+    
+    
+    
 
+@operation.route('/history', methods=['GET'])
+def user_history():
+    if "id" not in session:
+        flash("Veuillez vous connecter pour voir l'historique.", "danger")
+        return redirect(url_for("user.login"))
+
+    user_id = session["id"]  # ID de l'utilisateur connecté
+    operation_service = OperationService()
+    bank_account_service = BankAccountService()
+
+    # Récupérer tous les comptes de l'utilisateur
+    accounts = bank_account_service.get_all_accounts_by_user(user_id)
+
+    if not accounts:
+        flash("Aucun compte trouvé pour cet utilisateur.", "info")
+        return redirect(url_for("user.index"))
+
+    # Récupérer les historiques de chaque compte
+    history = {}
+    for account in accounts:
+        history[account.id] = operation_service.get_operations_by_account(account.id)
+
+    return render_template("user_history.html", accounts=accounts, history=history)
 
 
