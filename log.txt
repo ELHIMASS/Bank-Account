@@ -1,0 +1,5 @@
+2025-02-12 20:35:45,479 - INFO - L'utilisateur s'est connecté avec succès admin .
+2025-02-12 20:36:05,162 - INFO - Depot de 100 MAD sur le compte 2 .
+2025-02-12 20:36:07,829 - INFO - Recherche de compte avec les paramètres suivants: None, None, None, None .
+2025-02-12 20:36:09,623 - INFO - Affichage de l'historique du compte 2 .
+2025-02-12 20:36:56,305 - INFO - Recherche de compte avec les paramètres suivants: None, None, None, None .
