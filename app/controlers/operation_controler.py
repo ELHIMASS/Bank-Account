@@ -15,6 +15,7 @@ def make_session_permanent():
     session.permanent = True
     current_app.permanent_session_lifetime = timedelta(minutes=5)
 
+#done ?? log
 @operation.route('/transfer', methods=['GET', 'POST'])
 def transfer():
     bankAccount = BankAccountService()
@@ -46,75 +47,96 @@ def transfer():
         return render_template('transfer.html', acounts=acounts)
         
 
-
+#done ?? log
 @operation.route('/deposer', methods=['GET', 'POST'])
 def deposer():
-    bankAccount = BankAccountService()
-    op = OperationService()
-    if request.method == 'POST':
-        account_id = request.form['id_account']
-        amount = request.form['amount']
+    if session["isAdmin"] == True:
+        bankAccount = BankAccountService()
+        op = OperationService()
+        if request.method == 'POST':
+            account_id = request.form['id_account']
+            amount = request.form['amount']
 
-        op.create_deposit(account_id, amount)
-        return render_template('index.html')
-    
-    acounts = bankAccount.get_all()
-    return render_template('deposer.html', acounts=acounts)
+            op.create_deposit(account_id, amount)
+            return redirect(url_for("user.index"))
+        
+        acounts = bankAccount.get_all()
+        return render_template('deposer.html', acounts=acounts)
+    else:
+        return "tu n'est pas admin "
 
+
+#done ?? log
 @operation.route('/retirer', methods=['GET', 'POST'])
 def retirer():
     bankAccount = BankAccountService()
     op = OperationService()
-    if request.method == 'POST':
-        account_id = request.form['id_account']
-        amount = float(request.form['amount'])
-        
-        # Exécuter l'opération de retrait
-        op.create_retirer(account_id, amount)
+    if session["isAdmin"] == True:
+        if request.method == 'POST':
+            account_id = request.form['id_account']
+            amount = float(request.form['amount'])
+            
+            # Exécuter l'opération de retrait
+            op.create_retirer(account_id, amount)
 
-        return render_template('index.html')
+            return redirect(url_for("user.index"))
 
-    accounts = bankAccount.get_cheking()  # Récupérer les comptes disponibles
-    return render_template('retirer.html', accounts=accounts)
+        accounts = bankAccount.get_cheking()  # Récupérer les comptes disponibles
+        return render_template('retirer.html', accounts=accounts)
+    else:
+        if request.method == 'POST':
+            account_id = request.form['id_account']
+            amount = float(request.form['amount'])
+            
+            op.create_retirer(account_id, amount)
 
+            return redirect(url_for("user.index"))
+        # recupere les compte lier au user
+        accounts = bankAccount.get_all_accounts_by_user(session["id"]) 
+        return render_template('retirer.html', accounts=accounts) 
 
-
+#done ?? log
 @operation.route('/rechercher', methods=['GET'])
 def rechercher():
-    bankAccount = BankAccountService()
+    if session["isAdmin"] == True:
+        bankAccount = BankAccountService()
 
-    account_id = request.args.get('account_id', None)
-    account_type = request.args.get('account_type', None)
-    min_balance = request.args.get('min_balance', None)
-    max_balance = request.args.get('max_balance', None)
+        account_id = request.args.get('account_id', None)
+        account_type = request.args.get('account_type', None)
+        min_balance = request.args.get('min_balance', None)
+        max_balance = request.args.get('max_balance', None)
 
-    # Convertir les valeurs
-    account_id = int(account_id) if account_id else None
-    min_balance = float(min_balance) if min_balance else None
-    max_balance = float(max_balance) if max_balance else None
+        # Convertir les valeurs
+        account_id = int(account_id) if account_id else None
+        min_balance = float(min_balance) if min_balance else None
+        max_balance = float(max_balance) if max_balance else None
 
-    # Recherche des comptes
-    accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
-    return render_template('rechercher.html', accounts=accounts)
+        # Recherche des comptes
+        accounts = bankAccount.search_accounts(account_id, account_type, min_balance, max_balance)
+        return render_template('rechercher.html', accounts=accounts)
+    else:
+        return "tu n'est pas un admin"
 
 
 
-
+#done ?? log
 @operation.route('/account/<int:account_id>/history', methods=['GET'])
 def account_history(account_id):
-    bankAccount = BankAccountService()
-    op = OperationService()
-    
-    account = bankAccount.get_by_id(account_id)
+    if session["isAdmin"] == True:
+        bankAccount = BankAccountService()
+        op = OperationService()
+        
+        account = bankAccount.get_by_id(account_id)
 
-    if not account:
-        flash("Compte introuvable", "danger")
-        return redirect(url_for('operation.rechercher'))
+        if not account:
+            flash("Compte introuvable", "danger")
+            return redirect(url_for('operation.rechercher'))
 
-    history = op.get_operations_by_account(account_id)
+        history = op.get_operations_by_account(account_id)
 
-    return render_template('historique.html', account=account, history=history)
-
+        return render_template('historique.html', account=account, history=history)
+    else:
+        return "tu n'est pas un admin"
 
 
 
