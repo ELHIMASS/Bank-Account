@@ -1,6 +1,7 @@
 from sqlalchemy import and_
 from app.models.user_model import User
 from app.models.bankAcount_model import BankAccount
+from app.models.operation_model import Operation
 from app.models.dataBase import sessionLocal
 
 class BankAccountDAL:
@@ -63,3 +64,5 @@ class BankAccountDAL:
             return user.bank_accounts
         else:
             return []
+
+    

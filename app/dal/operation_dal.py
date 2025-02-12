@@ -1,8 +1,15 @@
 from app.models.operation_model import Operation
 from app.models.bankAcount_model import BankAccount
 from app.models.dataBase import sessionLocal
+from app.Logger.logger import Logger
+from typing import Final
+log = Logger()
 
 class OperationDAL:
+    FREE_TRANSACTIONS:Final[int]    = 3
+    TRANSACTION_FEE:Final[float]    = 0.2
+    DRAFT_OVER:Final[float]         = 500
+
     def __init__(self):
         self.session = sessionLocal()
 
@@ -17,9 +24,11 @@ class OperationDAL:
         receiver = self.session.query(BankAccount).filter(BankAccount.id == receiver_id).first()
 
         if not sender or not receiver:
+            log.log("error", f"Le compte n'existe pas N° {sender_id}")
             raise ValueError("L'un des comptes n'existe pas")
 
-        if sender.balance < amount:
+        if sender.balance + 500 - amount <= -1:
+            log.log("error",f"Fonds insuffisants pour le compte {sender.id}")
             raise ValueError("Fonds insuffisants")
 
         transfer = Operation(
@@ -28,7 +37,7 @@ class OperationDAL:
             sender_account_id=sender_id,
             receiver_account_id=receiver_id
         )
-
+         
         sender.balance -= amount
         receiver.balance += amount
 
@@ -68,25 +77,27 @@ class OperationDAL:
         account = self.session.query(BankAccount).filter(BankAccount.id == account_id).first()
 
         if not account:
+            log.log("error", f"Le compte n'existe pas N° {account_id}") 
             raise ValueError("Le compte n'existe pas")
 
-        if account.balance < amount:
+        if account.balance + 500 - amount <= -1:
+            log.log("error",f"Fonds insuffisants pour le compte {account.id}") 
             raise ValueError("Fonds insuffisants")
 
-    # Enregistrer l'opération de retrait
-        retireral = Operation(
+        # Enregistrer l'opération de retrait
+        retrait = Operation(
             type="withdrawal",
             amount=amount, 
             bank_account_id=account_id
-    )
+        )
 
         account.balance -= amount  # Débiter le compte
 
-        self.session.add(retireral)
+        self.session.add(retrait)
         self.session.commit()
         
         self.session.refresh(account)
-        self.session.refresh(retireral)
+        self.session.refresh(retrait)
         
         
         
