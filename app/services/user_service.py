@@ -1,5 +1,5 @@
 from app.dal.user_dal import UserDAL
-from app.models.dataBase import sessionLocal
+from app import sessionLocal
 
 class UserService:
     def __init__(self):

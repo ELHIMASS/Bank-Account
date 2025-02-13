@@ -1,5 +1,5 @@
 from app.models.user_model import User
-from app.models.dataBase import sessionLocal
+from app import sessionLocal
 
 class UserDAL:
     def __init__(self):

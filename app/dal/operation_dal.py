@@ -1,6 +1,6 @@
 from app.models.operation_model import Operation
 from app.models.bankAcount_model import BankAccount
-from app.models.dataBase import sessionLocal
+from app import sessionLocal
 from app.Logger.logger import Logger
 from typing import Final
 log = Logger()

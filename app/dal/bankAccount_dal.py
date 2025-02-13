@@ -2,7 +2,7 @@ from sqlalchemy import and_
 from app.models.user_model import User
 from app.models.bankAcount_model import BankAccount
 from app.models.operation_model import Operation
-from app.models.dataBase import sessionLocal
+from app import sessionLocal
 
 class BankAccountDAL:
     def __init__(self):

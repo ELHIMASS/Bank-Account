@@ -1,7 +1,7 @@
 from app.dal.operation_dal import OperationDAL
 from app.models.bankAcount_model import BankAccount
 from app.models.operation_model import Operation
-from app.models.dataBase import sessionLocal
+from app import sessionLocal
 
 
 class OperationService:
@@ -48,6 +48,8 @@ class OperationService:
             return db_session.query(BankAccount).filter_by(user_id=user_id).all()
         finally:
             db_session.close()
+    
+            
   
     
     
